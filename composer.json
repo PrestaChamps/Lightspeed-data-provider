@@ -13,12 +13,6 @@
     "seoshop/seoshop-php": "^1.9",
     "yiisoft/yii2": "~2.0.14"
   },
-  "replace": {
-    "bower-asset/jquery": "*",
-    "bower-asset/punycode": "*",
-    "bower-asset/yii2-pjax": "*",
-    "bower-asset/inputmask": "*"
-  },
   "autoload": {
     "psr-4": {
       "PrestaChamps\\": "src/"
