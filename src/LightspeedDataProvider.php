@@ -5,7 +5,7 @@
  * @license   MIT
  */
 
-namespace Prestachamps;
+namespace PrestaChamps;
 
 use WebshopappApiClient;
 use WebshopappApiException;
