@@ -1,0 +1,27 @@
+{
+  "name": "prestachamps/lightspeed-data-provider",
+  "description": "Lightspeed data provider for Yii2",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zoltan Szanto",
+      "email": "mrbig00@gmail.com"
+    }
+  ],
+  "require": {
+    "seoshop/seoshop-php": "^1.9",
+    "yiisoft/yii2": "~2.0.14"
+  },
+  "replace": {
+    "bower-asset/jquery": "*",
+    "bower-asset/punycode": "*",
+    "bower-asset/yii2-pjax": "*",
+    "bower-asset/inputmask": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "PrestaChamps\\": "src/"
+    }
+  }
+}
