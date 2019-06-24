@@ -56,7 +56,7 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
     /**
      * @var WebshopappApiClient the api client itself
      */
-    protected $client;
+    public $client;
 
     public function init()
     {
