@@ -84,6 +84,9 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
      */
     public function getTotalCount()
     {
+        if ($this->entity == 'shop') {
+            return 1;
+        }
         return $this->client->{$this->entity}->count();
     }
 
@@ -110,6 +113,17 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
         } else {
             $limit = 250;
             $page = 1;
+        }
+
+        if ($this->entity == 'shop') {
+            return [
+                $this->client->{$this->entity}->get(
+                    null,
+                    [
+                        'limit' => $limit,
+                        'page'  => $page
+                    ])
+            ];
         }
         return $this->client->{$this->entity}->get(
             null,
@@ -148,6 +162,9 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
      */
     protected function prepareTotalCount()
     {
+        if ($this->entity == 'shop') {
+            return 1;
+        }
         return $this->client->{$this->entity}->count();
     }
 }
