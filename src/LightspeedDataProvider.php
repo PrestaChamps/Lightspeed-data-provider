@@ -10,10 +10,12 @@ namespace PrestaChamps;
 use WebshopappApiClient;
 use WebshopappApiException;
 use yii\data\BaseDataProvider;
+use LightspeedHQ\Ecom\EcomClient;
 use yii\data\DataProviderInterface;
 
 /**
  * Class LightspeedDataProvider
+ *
  * @package app\DataProviders
  */
 class LightspeedDataProvider extends BaseDataProvider implements DataProviderInterface
@@ -54,7 +56,7 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
     public $apiLanguage = 'en';
 
     /**
-     * @var WebshopappApiClient the api client itself
+     * @var EcomClient the api client itself
      */
     public $client;
 
@@ -69,17 +71,19 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
      */
     protected function initClient()
     {
-        $this->client = new WebshopappApiClient(
-            $this->apiServer,
-            $this->apiKey,
-            $this->userSecret,
-            $this->apiLanguage
-        );
+//        $this->client = new WebshopappApiClient(
+//            $this->apiServer,
+//            $this->apiKey,
+//            $this->userSecret,
+//            $this->apiLanguage
+//        );
+        $this->client = new EcomClient($this->apiServer, $this->apiLanguage, $this->apiKey, $this->userSecret);
     }
 
     /**
      * Returns the total number of data models.
      * When [[getPagination|pagination]] is false, this is the same as [[getCount|count]].
+     *
      * @return int total number of possible data models.
      */
     public function getTotalCount()
@@ -87,7 +91,14 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
         if ($this->entity == 'shop') {
             return 1;
         }
-        return $this->client->{$this->entity}->count();
+
+//        $count = $this->client->{$this->entity}->count();
+        $count = json_decode($this->client->get($this->entity . "/count")->getBody()->getContents())->count;
+        if (is_array($count)) {
+            return $count['count'];
+        }
+
+        return $count;
     }
 
     /**
@@ -100,6 +111,7 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
 
     /**
      * Prepares the data models that will be made available in the current page.
+     *
      * @return array the available data models
      */
     protected function prepareModels()
@@ -117,25 +129,27 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
 
         if ($this->entity == 'shop') {
             return [
-                $this->client->{$this->entity}->get(
-                    null,
-                    [
-                        'limit' => $limit,
-                        'page'  => $page
-                    ])
+
+                $this->get($this->entity),
             ];
         }
-        return $this->client->{$this->entity}->get(
-            null,
+
+        $resp = $this->get(
+            $this->entity,
             [
                 'limit' => $limit,
-                'page'  => $page
-            ]);
+                'page' => $page,
+            ]
+        );
+
+        return $resp;
     }
 
     /**
      * Prepares the keys associated with the currently available data models.
+     *
      * @param array $models the available data models
+     *
      * @return array the keys
      */
     protected function prepareKeys($models)
@@ -158,6 +172,7 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
 
     /**
      * Returns a value indicating the total number of data models in this data provider.
+     *
      * @return int total number of data models in this data provider.
      */
     protected function prepareTotalCount()
@@ -165,6 +180,23 @@ class LightspeedDataProvider extends BaseDataProvider implements DataProviderInt
         if ($this->entity == 'shop') {
             return 1;
         }
-        return $this->client->{$this->entity}->count();
+
+        $count = $this->client->{$this->entity}->count();
+        if (is_array($count)) {
+            return $count['count'];
+        }
+
+        return $count;
+    }
+
+    public function get($path, $arguments = [])
+    {
+        $pathName = $path;
+        if ($path == 'catalog') {
+            $pathName = 'products';
+        }
+        $response = json_decode($this->client->request('GET', $path, ['query' => $arguments])->getBody()->getContents(), true);
+
+        return $response[$pathName];
     }
 }
