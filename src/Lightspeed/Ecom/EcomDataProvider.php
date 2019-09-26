@@ -21,15 +21,12 @@ use LightspeedHQ\Ecom\EcomClient;
 use yii\data\DataProviderInterface;
 
 /**
-<<<<<<< HEAD:src/Lightspeed/Ecom/EcomDataProvider.php
  * Class EcomDataProvider
  *
  * @package PrestaChamps\Lightspeed\Ecom
-=======
  * Class LightspeedDataProvider
  *
  * @package app\DataProviders
->>>>>>> master:src/LightspeedDataProvider.php
  */
 class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
 {
