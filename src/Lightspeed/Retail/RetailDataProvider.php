@@ -66,6 +66,7 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
             [
                 'limit' => $this->getPagination()->limit,
                 'offset' => $this->getPagination()->getOffset(),
+                'load_relations' => 'all'
             ]
         )->toArray();
 
