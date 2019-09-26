@@ -1,11 +1,18 @@
 <?php
 /**
+ * MailChimp
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Commercial License
+ * you can't distribute, modify or sell this code
+ *
  * @author    Zoltan Szanto <zoli@prestachamps.com>
- * @copyright Prestachamps
- * @license   MIT
+ * @copyright Mailchimp
+ * @license   commercial
  */
 
-namespace PrestaChamps;
+namespace PrestaChamps\Lightspeed\Ecom;
 
 use WebshopappApiClient;
 use WebshopappApiException;
@@ -13,10 +20,11 @@ use yii\data\BaseDataProvider;
 use yii\data\DataProviderInterface;
 
 /**
- * Class LightspeedDataProvider
- * @package app\DataProviders
+ * Class EcomDataProvider
+ *
+ * @package PrestaChamps\Lightspeed\Ecom
  */
-class LightspeedDataProvider extends BaseDataProvider implements DataProviderInterface
+class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
 {
     /**
      * @var string The type of entity you want to read. See the api docs.
