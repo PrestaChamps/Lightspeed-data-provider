@@ -12,7 +12,7 @@
  * @license   commercial
  */
 
-namespace PrestaChamps\LightSpeed\Retail;
+namespace PrestaChamps\Lightspeed\Retail;
 
 use yii\data\BaseDataProvider;
 use yii\data\DataProviderInterface;
