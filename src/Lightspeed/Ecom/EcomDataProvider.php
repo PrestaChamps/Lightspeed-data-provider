@@ -81,12 +81,6 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
      */
     protected function initClient()
     {
-//        $this->client = new WebshopappApiClient(
-//            $this->apiServer,
-//            $this->apiKey,
-//            $this->userSecret,
-//            $this->apiLanguage
-//        );
         $this->client = new EcomClient($this->apiServer, $this->apiLanguage, $this->apiKey, $this->userSecret);
     }
 
@@ -102,8 +96,11 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
             return 1;
         }
 
-//        $count = $this->client->{$this->entity}->count();
-        $count = json_decode($this->client->get($this->entity . "/count")->getBody()->getContents())->count;
+        if ($this->entity == 'scripts') {
+            return json_decode($this->client->get("shop/scripts/count")->getBody()->getContents())->count;
+        }
+
+        $count = json_decode($this->client->get($this->entity)->getBody()->getContents())->count;
         if (is_array($count)) {
             return $count['count'];
         }
@@ -139,9 +136,12 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
 
         if ($this->entity == 'shop') {
             return [
-
                 $this->get($this->entity),
             ];
+        }
+
+        if ($this->entity == 'scripts') {
+            return $this->get('shop/scripts');
         }
 
         $resp = $this->get(
@@ -205,8 +205,16 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
         if ($path == 'catalog') {
             $pathName = 'products';
         }
+        if ($path == 'shop/scripts') {
+            $pathName = 'shopScripts';
+        }
+
         $response = json_decode($this->client->request('GET', $path, ['query' => $arguments])->getBody()->getContents(), true);
 
-        return $response[$pathName];
+        if (isset($response[$pathName])) {
+            return $response[$pathName];
+        }
+
+        return $response;
     }
 }
