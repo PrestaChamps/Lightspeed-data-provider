@@ -70,6 +70,11 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
      */
     public $client;
 
+    /**
+     * @var bool Expand the data with more informations (+1 request per item)
+     */
+    public $expand = false;
+
     public function init()
     {
         parent::init();
@@ -102,7 +107,7 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
         $stuff = $this->client->get($this->entity)->getHeaders();
 
 
-        $count = json_decode($this->client->get($this->entity."/count")->getBody()->getContents(),true);
+        $count = json_decode($this->client->get($this->entity . "/count")->getBody()->getContents(), true);
 
         if (is_array($count)) {
             return $count['count'];
@@ -155,6 +160,14 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
             ]
         );
 
+        if ($this->expand) {
+            $expanded = [];
+            foreach ($resp as $item) {
+                $expResp = $this->get("$this->entity/{$item['id']}");
+                $expanded[] = reset($expResp);
+            }
+            $resp = $expanded;
+        }
         return $resp;
     }
 
