@@ -99,8 +99,11 @@ class EcomDataProvider extends BaseDataProvider implements DataProviderInterface
         if ($this->entity == 'scripts') {
             return json_decode($this->client->get("shop/scripts/count")->getBody()->getContents())->count;
         }
+        $stuff = $this->client->get($this->entity)->getHeaders();
 
-        $count = json_decode($this->client->get($this->entity)->getBody()->getContents())->count;
+
+        $count = json_decode($this->client->get($this->entity."/count")->getBody()->getContents(),true);
+
         if (is_array($count)) {
             return $count['count'];
         }
