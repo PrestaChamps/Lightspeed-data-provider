@@ -37,6 +37,8 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
 
     public $timestamp;
 
+    public $relations = [];
+
     /**
      * Returns a value indicating the total number of data models in this data provider.
      *
@@ -68,7 +70,7 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
             [
                 'limit' => $this->getPagination()->limit,
                 'offset' => $this->getPagination()->getOffset(),
-                'load_relations' => 'all',
+                'load_relations' => json_encode($this->relations),
                 'timeStamp' => $this->timestamp
             ]
         )->toArray();
