@@ -70,7 +70,7 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
             [
                 'limit' => $this->getPagination()->limit,
                 'offset' => $this->getPagination()->getOffset(),
-                'load_relations' => json_encode($this->relations),
+                'load_relations' => 'all',
                 'timeStamp' => $this->timestamp
             ]
         )->toArray();
