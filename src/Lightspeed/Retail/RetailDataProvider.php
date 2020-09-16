@@ -102,12 +102,14 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
      */
     protected function prepareKeys($models)
     {
-        if (empty($models)) {
-            return [];
-        }
+        if (empty($this->_keys)) {
+            if (empty($models)) {
+                return [];
+            }
 
-        [$firstItem] = $models;
-        $this->setKeys(array_keys($firstItem));
+            [$firstItem] = $models;
+            $this->setKeys(array_keys($firstItem));
+        }
 
         return;
     }
