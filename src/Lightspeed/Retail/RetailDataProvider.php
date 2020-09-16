@@ -48,7 +48,11 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
     {
         $method = "get" . ucfirst($this->entity) . "Iterator";
 
-        return iterator_count($this->client->$method(['timeStamp' => $this->timestamp]));
+        $count = iterator_count($this->client->$method(['timeStamp' => $this->timestamp]));
+
+        $this->setTotalCount($count);
+
+        return $count;
     }
 
     /**
@@ -66,6 +70,17 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
      */
     protected function prepareModels()
     {
+        $pagination = $this->getPagination();
+
+        if ($pagination !== false) {
+            $pagination->totalCount = $this->getTotalCount();
+            $limit = $pagination->getLimit();
+            $page = $pagination->getPage() + 1;
+        } else {
+            $limit = 100;
+            $page = 1;
+        }
+
         $method = "get" . ucfirst($this->entity);
         $resp = $this->client->$method(
             [
@@ -75,7 +90,6 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
                 'timeStamp' => $this->timestamp,
             ]
         )->toArray();
-
         return $resp;
     }
 
@@ -92,8 +106,9 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
             return [];
         }
 
-        list($firstItem) = $models;
+        [$firstItem] = $models;
+        $this->setKeys(array_keys($firstItem));
 
-        return array_keys($firstItem);
+        return;
     }
 }
