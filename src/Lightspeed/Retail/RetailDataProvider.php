@@ -39,6 +39,8 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
 
     public $relations = [];
 
+    public $_keys;
+    
     /**
      * Returns a value indicating the total number of data models in this data provider.
      *
