@@ -48,13 +48,13 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
      */
     protected function prepareTotalCount()
     {
-        $method = "get" . ucfirst($this->entity) . "Iterator";
+        $method = "get" . ucfirst($this->entity) . "Attributes";
 
-        $count = iterator_count($this->client->$method(['timeStamp' => $this->timestamp]));
+        $attributes = $this->client->$method(['timeStamp' => $this->timestamp]);
 
-        $this->setTotalCount($count);
+        $this->setTotalCount($attributes['count']);
 
-        return $count;
+        return $attributes['count'];
     }
 
     /**
