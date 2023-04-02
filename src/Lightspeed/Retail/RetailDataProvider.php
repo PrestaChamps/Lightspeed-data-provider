@@ -115,4 +115,10 @@ class RetailDataProvider extends BaseDataProvider implements DataProviderInterfa
 
         return;
     }
+    
+    public function getKeys()
+    {
+        [$firstItem] = $this->models;
+        return array_keys($firstItem);
+    }
 }
